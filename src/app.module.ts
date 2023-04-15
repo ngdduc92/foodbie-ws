@@ -7,7 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     UserModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/foodbie'),
+    MongooseModule.forRoot(
+      'mongodb://admin-user:P%40ssw0rd@foobbie.com:27017/?authSource=foobbie',
+    ),
   ],
   controllers: [AppController],
   providers: [AppService],
