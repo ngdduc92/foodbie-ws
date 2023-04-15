@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ObjectId, ObjectIdExpression } from 'mongoose';
 import { UserService } from './user.service';
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -18,14 +18,14 @@ export class UserController {
     return this.userService.create();
   }
 
-  @Get('all')
+  @Get('')
   findAll() {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  @Get(':email')
+  findOne(@Param('email') email: string) {
+    return this.userService.findByEmail(email);
   }
 
   @Patch(':id')

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId, Types } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Connection, Model, ObjectId, Types } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 
 @Injectable()
@@ -13,9 +13,14 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: string) {
-    console.log(new Types.ObjectId(id));
-    return this.userModel.find().exec();
+  async findByUserId(userId: string){
+    const user = await this.userModel.findOne({userId}).exec()
+    return user
+  }
+
+  async findByEmail(email: string){
+    const user = await this.userModel.findOne({email}).exec()
+    return user
   }
 
   update(id: number) {
