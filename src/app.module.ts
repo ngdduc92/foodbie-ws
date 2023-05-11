@@ -7,9 +7,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb://admin-user:P%40ssw0rd@foobbie.com:27017/foobbie?authSource=foobbie',
-    ),
+    MongooseModule.forRoot('mongodb://foobbie.com:27017/foodbie'),
     UserModule,
     AuthModule,
   ],
