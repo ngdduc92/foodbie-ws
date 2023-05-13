@@ -26,14 +26,12 @@ export class AuthController {
     signIn(@Body() signInDto: Record<string, any>) {
       return this.authService.signIn(signInDto.email, signInDto.password);
     }
-
     @UseGuards(AuthGuard)
     @Get('profile')
     async getProfile(@Request() req) {
       const userProfile = await this.userService.findByUserId(req.user.sub)
       return userProfile;
     }
-
     @Get('refresh')
     async refresh(@Request() req) {
       const accessToken = this.authService.extractTokenFromHeader(req);
@@ -61,7 +59,7 @@ export class AuthController {
         throw new UnauthorizedException();
       }
       const decodedJwtAccessToken: any = this.jwtService.decode(accessToken);
-      return this.authService.deleteRefreshToken(decodedJwtAccessToken.sub);
+      return this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
     }
 }
   

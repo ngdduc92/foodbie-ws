@@ -19,7 +19,6 @@ export class AuthService {
         if (user?.password !== pass) {
           throw new UnauthorizedException();
         }
-        // const payload = { email: user.email, sub: user.userId };
         const [accessToken, refreshToken] = await Promise.all([
           this.genAccessToken(user),
           this.jwtService.signAsync(
@@ -29,7 +28,7 @@ export class AuthService {
             },
             {
               secret: jwtConstants.refresh_secret,
-              expiresIn: '7d',
+              expiresIn: '60s',
             },
           ),
         ]);
@@ -56,7 +55,7 @@ export class AuthService {
         },
         {
           secret: jwtConstants.access_secret,
-          expiresIn: '15m',
+          expiresIn: '30s',
         },
       )
     }
