@@ -28,7 +28,7 @@ export class AuthService {
             },
             {
               secret: jwtConstants.refresh_secret,
-              expiresIn: '60s',
+              expiresIn: '7d',
             },
           ),
         ]);
@@ -55,7 +55,7 @@ export class AuthService {
         },
         {
           secret: jwtConstants.access_secret,
-          expiresIn: '30s',
+          expiresIn: '15m',
         },
       )
     }
