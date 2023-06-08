@@ -45,9 +45,11 @@ export class AuthController {
         if (payload) {
           return this.authService.genAccessToken({userId: decodedJwtAccessToken.sub, email: decodedJwtAccessToken.email});
         } else {
+          await this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
           throw new UnauthorizedException();
         }
       } catch {
+        await this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
         throw new UnauthorizedException();
       }  
     }
