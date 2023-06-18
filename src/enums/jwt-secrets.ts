@@ -1,0 +1,4 @@
+export enum JwtSecrets {
+  ACCESS_SECRET = 'JWT_ACCESS_SECRET',
+  REFRESH_SECRET = 'JWT_REFRESH_SECRET',
+}

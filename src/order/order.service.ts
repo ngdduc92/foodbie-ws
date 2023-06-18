@@ -29,5 +29,4 @@ export class OrderService {
   async remove(id: string): Promise<Order | null> {
     return this.OrderModel.findByIdAndDelete(id).exec();
   }
-
 }

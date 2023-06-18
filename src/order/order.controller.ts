@@ -6,7 +6,7 @@ import {
   Param,
   Post,
   Put,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Order } from 'src/schemas/order.schema';
@@ -41,5 +41,4 @@ export class OrderController {
   remove(@Param('id') id: string) {
     return this.orderService.remove(id);
   }
-  
 }

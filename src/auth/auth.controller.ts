@@ -1,69 +1,69 @@
 import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Patch,
-    Param,
-    Delete,
-    HttpCode,
-    HttpStatus,
-    UseGuards,
-    Request,
-    UnauthorizedException,
-  } from '@nestjs/common';
+  Controller,
+  Get,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { JwtSecrets } from '../enums/jwt-secrets';
 
 @Controller('v1/auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService, private userService: UserService, private jwtService: JwtService) {}
-    @HttpCode(HttpStatus.OK)
-    @Post('login')
-    signIn(@Body() signInDto: Record<string, any>) {
-      return this.authService.signIn(signInDto.email, signInDto.password);
-    }
+  constructor(
+    private readonly authService: AuthService,
+    private jwtService: JwtService,
+  ) {}
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
+  signIn(@Body() signInDto: Record<string, any>) {
+    return this.authService.signIn(signInDto.email, signInDto.password);
+  }
 
-    @Get('profile')
-    async getProfile(@Request() req) {
-      const userProfile = await this.userService.findByUserId(req.user.sub)
-      return userProfile;
+  @Get('refresh')
+  async refresh(@Request() req) {
+    const accessToken = this.authService.extractTokenFromHeader(req);
+    if (!accessToken) {
+      throw new UnauthorizedException();
     }
-
-    @Get('refresh')
-    async refresh(@Request() req) {
-      const accessToken = this.authService.extractTokenFromHeader(req);
-      if (!accessToken) {
-        throw new UnauthorizedException();
-      }
-      const decodedJwtAccessToken: any = this.jwtService.decode(accessToken);
-      const refreshToken = await this.authService.getRefreshToken(decodedJwtAccessToken.sub);
-      try {
-        const payload = await this.authService.verifyToken(refreshToken, jwtConstants.refresh_secret);
-        if (payload) {
-          return this.authService.genAccessToken({userId: decodedJwtAccessToken.sub, email: decodedJwtAccessToken.email});
-        } else {
-          await this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
-          throw new UnauthorizedException();
-        }
-      } catch {
+    const decodedJwtAccessToken: any = this.jwtService.decode(accessToken);
+    const refreshToken = await this.authService.getRefreshToken(
+      decodedJwtAccessToken.sub,
+    );
+    try {
+      const payload = await this.authService.verifyToken(
+        refreshToken,
+        JwtSecrets.REFRESH_SECRET,
+      );
+      if (payload) {
+        return this.authService.genAccessToken({
+          userId: decodedJwtAccessToken.sub,
+          email: decodedJwtAccessToken.email,
+        });
+      } else {
         await this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
         throw new UnauthorizedException();
-      }  
-    }
-
-    @Get('logout')
-    logout(@Request() req) {
-      const accessToken = this.authService.extractTokenFromHeader(req);
-      if (!accessToken) {
-        throw new UnauthorizedException();
       }
-      const decodedJwtAccessToken: any = this.jwtService.decode(accessToken);
-      return this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
+    } catch {
+      await this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
+      throw new UnauthorizedException();
     }
-    
+  }
+
+  @Get('logout')
+  @UseGuards(AuthGuard)
+  logout(@Request() req) {
+    const accessToken = this.authService.extractTokenFromHeader(req);
+    if (!accessToken) {
+      throw new UnauthorizedException();
+    }
+    const decodedJwtAccessToken: any = this.jwtService.decode(accessToken);
+    return this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
+  }
 }
-  

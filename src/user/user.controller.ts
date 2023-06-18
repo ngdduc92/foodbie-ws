@@ -3,12 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
-import { ObjectId, ObjectIdExpression } from 'mongoose';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 @Controller('users')
@@ -26,12 +26,17 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findById(id);
+  }
+
   @Get(':email')
-  findOne(@Param('email') email: string) {
+  findByEmail(@Param('email') email: string) {
     return this.userService.findByEmail(email);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: object) {
     return this.userService.update(+id);
   }

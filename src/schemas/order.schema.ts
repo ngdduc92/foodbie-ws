@@ -5,7 +5,6 @@ export type OrderDocument = HydratedDocument<Order>;
 
 @Schema()
 export class Order {
-  
   @Prop()
   shopId: number;
 

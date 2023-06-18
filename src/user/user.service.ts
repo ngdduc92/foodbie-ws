@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model, ObjectId, Types } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 
 @Injectable()
@@ -9,19 +9,17 @@ export class UserService {
   create() {
     return 'This action adds a new user';
   }
-  
+
   findAll() {
     return `This action returns all user`;
   }
 
-  async findByUserId(userId: string){
-    const user = await this.userModel.findOne({userId}).exec()
-    return user
+  findById(userId: string) {
+    return this.userModel.findOne({ userId }).exec();
   }
 
-  async findByEmail(email: string){
-    const user = await this.userModel.findOne({email}).exec()
-    return user
+  findByEmail(email: string) {
+    return this.userModel.findOne({ email }).exec();
   }
 
   update(id: number) {
