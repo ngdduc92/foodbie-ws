@@ -9,6 +9,7 @@ export class UserService {
   create() {
     return 'This action adds a new user';
   }
+  
   findAll() {
     return `This action returns all user`;
   }

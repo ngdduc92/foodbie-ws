@@ -18,7 +18,7 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 
-@Controller('auth')
+@Controller('v1/auth')
 export class AuthController {
     constructor(private readonly authService: AuthService, private userService: UserService, private jwtService: JwtService) {}
     @HttpCode(HttpStatus.OK)
@@ -26,12 +26,13 @@ export class AuthController {
     signIn(@Body() signInDto: Record<string, any>) {
       return this.authService.signIn(signInDto.email, signInDto.password);
     }
-    @UseGuards(AuthGuard)
+
     @Get('profile')
     async getProfile(@Request() req) {
       const userProfile = await this.userService.findByUserId(req.user.sub)
       return userProfile;
     }
+
     @Get('refresh')
     async refresh(@Request() req) {
       const accessToken = this.authService.extractTokenFromHeader(req);
@@ -63,5 +64,6 @@ export class AuthController {
       const decodedJwtAccessToken: any = this.jwtService.decode(accessToken);
       return this.authService.deleteRefreshToken(decodedJwtAccessToken?.sub);
     }
+    
 }
   

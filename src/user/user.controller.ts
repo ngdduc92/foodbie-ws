@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ObjectId, ObjectIdExpression } from 'mongoose';
 import { UserService } from './user.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
