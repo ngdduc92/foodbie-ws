@@ -8,7 +8,7 @@ import { OrderModule } from './order/order.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb://root:root@foobbie.com:27017/foobbie?authSource=admin',
+      'mongodb+srv://foobbie:foobbie@cluster0.8olvdxw.mongodb.net/foobbie?retryWrites=true&w=majority',
     ),
     UserModule,
     OrderModule,
