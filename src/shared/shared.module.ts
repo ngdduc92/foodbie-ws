@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from 'src/auth/auth.module';
 import { Order, OrderSchema } from 'src/schemas/order.schema';
+import { Product, ProductSchema } from 'src/schemas/product.schema';
+import { ProductOptions, ProductOptionsSchema } from 'src/schemas/products-options.schema';
+import { Shop, ShopSchema } from 'src/schemas/shop.schema';
 import { Token, TokenSchema } from 'src/schemas/token.schema';
 import { User, UserSchema } from 'src/schemas/user.schema';
 
@@ -19,6 +22,18 @@ import { User, UserSchema } from 'src/schemas/user.schema';
       {
         name: Order.name,
         schema: OrderSchema,
+      },
+      {
+        name: Shop.name,
+        schema: ShopSchema,
+      },
+      {
+        name: Product.name,
+        schema: ProductSchema,
+      },
+      {
+        name: ProductOptions.name,
+        schema: ProductOptionsSchema,
       },
     ]),
   ],
