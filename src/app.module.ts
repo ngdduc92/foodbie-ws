@@ -8,6 +8,7 @@ import { OrderModule } from './order/order.module';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from 'config/configuration';
 import { ShopModule } from './shop/shop.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ShopModule } from './shop/shop.module';
     UserModule,
     OrderModule,
     ShopModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
