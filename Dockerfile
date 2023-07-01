@@ -15,6 +15,8 @@ COPY . .
 # Creates a "dist" folder with the production build
 RUN npm run build
 
+ENV NODE_ENV=production
+
 EXPOSE 5000
 
 # Start the server using the production build
